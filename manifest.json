@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+  "name": "Language_Filter",
+  "version": "1.0",
+
+  "description": "Adds a filter option that displays languages./",
+
+  "icons": {
+    "48": "icons/border-48.png"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.letterboxd.com/film/*"],
+      "js": ["filter.js"]
+    }
+  ]
+}
