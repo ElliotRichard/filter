@@ -11,7 +11,7 @@
 
   "content_scripts": [
     {
-      "matches": ["*://*.letterboxd.com/film/*"],
+      "matches": ["*://*.letterboxd.com/*/list/*"],
       "js": ["filter.js"]
     }
   ]
