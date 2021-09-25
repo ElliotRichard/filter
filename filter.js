@@ -1,3 +1,4 @@
+import { fetchTMDBData } from './tmdb';
 // get all ids of current films
 // 'data-film-id' will get me the id
 // currently on the page. Though that means
@@ -9,3 +10,5 @@
 // with the loading of the pages, ergo a page of nearly all English would become
 // a page with 3 films on it. To get around this I'd have to take-over the entire
 // pagination. Possible?
+let movieIds = [];
+let menuElement;
