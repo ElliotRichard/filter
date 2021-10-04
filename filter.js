@@ -12,7 +12,7 @@ function scanApple() {
   console.log(result);
   return result;
 }
-
+module.exports = scanApple;
 console.log('***');
 // console.log($('li').attr('data-film-name'));
 console.log('###');
