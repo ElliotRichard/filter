@@ -14,5 +14,12 @@
       "matches": ["*://letterboxd.com/*/list/*"],
       "js": ["filter.js"]
     }
+  ],
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "*://api.themoviedb.org/*",
+    "webNavigation",
+    "tabs"
   ]
 }
