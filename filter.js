@@ -1,4 +1,4 @@
-let movieQueryObjs = [];
+const movieQueryObjs = [];
 const listElements = [];
 // Add to language options and language map allow them as filters.
 const languageOptions = ['English', 'French', 'Japanese'];
@@ -8,13 +8,19 @@ let language = 'none';
 // Filtered movies are either shaded or removed from DOM
 const filterTypeHide = false;
 
+// Observes if films are added to HTML after load, then updates their language
+let count = 0;
+let newInfo = false;
 let observer = new MutationObserver((mutations) => {
   mutations.forEach((mutation) => {
     if (!mutation.addedNodes) return;
 
+    newInfo = false;
     for (let i = 0; i < mutation.addedNodes.length; i++) {
       let node = mutation.addedNodes[i];
       if (node.hasAttribute('data-film-release-year')) {
+        count++;
+        newInfo = true;
         let $movieQueryObj = {
           title: node.getAttribute('data-film-name'),
           year: node.getAttribute('data-film-release-year'),
@@ -22,7 +28,12 @@ let observer = new MutationObserver((mutations) => {
         movieQueryObjs.push($movieQueryObj);
         listElements.push(node);
       }
-      console.log(node.getAttribute('data-film-release-year'));
+    }
+    if (language !== 'none' && newInfo && count >= 2) {
+      console.log(`count: ${count}`);
+      count = 0;
+      newInfo = false;
+      getMovieLanguages();
     }
   });
 });
@@ -46,7 +57,7 @@ const fetchTMDBData = async (query) => {
   const encodedYear = encodeURIComponent(query.year);
   const apiKey = '6b3966c85ef3ac126edf60c04d0f2b22';
   const endpoint = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&&language=en-US&query=${encodedTitle}&year=${encodedYear}&page=1&include_adult=false`;
-  console.log(endpoint);
+  // console.log(endpoint);
   const data = await (await fetch(endpoint)).json();
   // Only allows exact title & year match.
   data.results.map((movies) => {
@@ -55,7 +66,7 @@ const fetchTMDBData = async (query) => {
       date = movies.release_date.split('-')[0];
     }
     if (date === 'unknown') return;
-    console.log(movies.original_language);
+    console.log(JSON.stringify(movies, null, 4));
     if (movies.original_language !== language) {
       listElements.forEach((listEl) => {
         if (listEl.getAttribute('data-film-name') === movies.title) {
@@ -75,6 +86,20 @@ const fetchTMDBData = async (query) => {
     }; */
   });
 };
+
+// Add language function
+const addLanguage = (language) => {
+  if (languageMap[language] === undefined) {
+    const endpoint = 'heroku.app/code/';
+    const url = encodeURI(endpoint + language);
+    const data = await(await fetch(url)).json();
+    const languageListElement = document.querySelector('languageListElement');
+    const newOption = document.createElement('li');
+    newOption.innerText = data.full_language;
+    languageListElement.appendChild(newOption);
+  }
+};
+
 // Create new option for the native pages filter menu
 const selectionBar = document.querySelector('.sorting-selects');
 const newSelection = document.createElement('section');
@@ -106,6 +131,7 @@ languageListContainer.firstBefore(languageFilterOption_hide);
 languageListContainer.firstBefore(languageFilterOption_highlight); */
 
 const languageListElement = document.createElement('ul');
+languageListElement.classList.add('languageListElement');
 const languageListOptionsElements = [];
 // languageOptions.forEach((lang) => languageListOptionsElements.push(document.createElement('li')));
 languageListElement.classList.add('smenu-menu');
