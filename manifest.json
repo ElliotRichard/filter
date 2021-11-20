@@ -1,12 +1,13 @@
 {
   "manifest_version": 2,
-  "name": "Language_Filter",
+  "name": "Letterboxd Languages",
   "version": "1.0",
 
-  "description": "Adds a filter option that displays languages./",
+  "description": "Adds an option to Letterboxd lists that allow filtering based upon movie language.",
 
   "icons": {
-    "48": "icons/border-48.png"
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png"
   },
 
   "content_scripts": [
@@ -19,6 +20,7 @@
     "webRequest",
     "webRequestBlocking",
     "*://api.themoviedb.org/*",
+    "https://language-iso-code-api.herokuapp.com/*",
     "webNavigation",
     "tabs"
   ]
