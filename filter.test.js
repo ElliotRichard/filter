@@ -1,6 +1,14 @@
-// import { scanApple } from './filter.js';
+/**
+ * @jest-environment jsdom
+ */
+
 const filter = require('./filter');
 
-test('scans markup for class apple and prints that class', () => {
-  expect(filter()).toBe('Apple');
+test('Checks that file is running', () => {
+  expect(filter).toBe(true);
+});
+
+test('toTitleCase converts string to titlecase', () => {
+  let normalcase = 'string';
+  expect(normalcase.toTitleCase()).toEqual('String');
 });
